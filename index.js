@@ -1,31 +1,31 @@
 /**
  * @type {import('postcss').PluginCreator}
  */
-module.exports = (opts = {}) => {
-  // Work with options here
+module.exports = () => {
+  // Define the custom colors
+  const colors = {
+    "iliad-next": "#F8E71C",
+    iliad: "#00ace0",
+    atlas: "#374ffb",
+  };
 
   return {
-    postcssPlugin: 'postcss-iliad-brand',
-    /*
-    Root (root, postcss) {
-      // Transform CSS AST here
-    }
-    */
+    postcssPlugin: "postcss-iliad-brand",
+    Declaration(decl) {
+      Object.entries(colors).forEach(([name, hex]) => {
+        if (decl.value.trim() === name) {
+          decl.value = hex;
+        } else {
+          const escapedName = name.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+          const regex = new RegExp(
+            `(^|[^a-zA-Z0-9-])(${escapedName})(?=$|[^a-zA-Z0-9-])`,
+            "g"
+          );
+          decl.value = decl.value.replace(regex, `$1${hex}`);
+        }
+      });
+    },
+  };
+};
 
-    /*
-    Declaration (decl, postcss) {
-      // The faster way to find Declaration node
-    }
-    */
-
-    /*
-    Declaration: {
-      color: (decl, postcss) {
-        // The fastest way find Declaration node if you know property name
-      }
-    }
-    */
-  }
-}
-
-module.exports.postcss = true
+module.exports.postcss = true;
