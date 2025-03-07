@@ -1,9 +1,10 @@
 /**
  * @type {import('postcss').PluginCreator}
  */
-module.exports = () => {
+module.exports = ({ colors: customColors } = { colors: {} }) => {
   // Define the custom colors
   const colors = {
+    ...customColors,
     "iliad-next": "#F8E71C",
     iliad: "#00ace0",
     atlas: "#374ffb",
